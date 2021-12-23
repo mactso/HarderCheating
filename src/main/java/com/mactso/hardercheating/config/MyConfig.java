@@ -12,6 +12,7 @@ import com.mactso.hardercheating.Main;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.common.ForgeConfigSpec.BooleanValue;
 import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
+import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
@@ -31,10 +32,14 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 			COMMON = specPair.getLeft();
 		}
 
-
+		public static int maxClickDistance;
 		public static String[] validModSet;
 		private static boolean fixBadStacks;
 		
+		public static int getMaxClickDistance() {
+			return maxClickDistance;
+		}
+
 		public static boolean isValidMod(String classname)
 		{	
 			for (String mod : validModSet) {
@@ -58,6 +63,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 		{
 			validModSet = extract(COMMON.ValidModSet.get());
 			fixBadStacks  = COMMON.fixBadStacks.get();
+			maxClickDistance= COMMON.maxClickDistance.get();
 		}
 
 
@@ -79,6 +85,7 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 		{
 			public final ConfigValue<List<? extends String>> ValidModSet;
 			public final BooleanValue fixBadStacks;
+			public final IntValue maxClickDistance;
 			
 			public Common(ForgeConfigSpec.Builder builder)
 			{
@@ -89,6 +96,10 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 				String sectionTrans;
 
 				sectionTrans = baseTrans + "general.";
+
+				maxClickDistance = builder.comment("Legal Max Click Distance (6 to 64) Default 12.")
+						.translation(Main.MODID + ".config." + "maxClickDistance").defineInRange("maxClickDistance", () -> 6, 12, 64);
+				
 				
 				fixBadStacks = builder.comment("fixBadStacks")
 						.translation(Main.MODID + ".config." + "fixBadStacks")
@@ -98,6 +109,10 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 						.comment("Checked Mods Name List")
 						.translation(sectionTrans + "valid_mod_set")
 						.defineList("Valid Mod Set", includeModsList, Common::isString);
+			}
+
+			public IntValue getClickDistance() {
+				return maxClickDistance;
 			}
 
 			public static boolean isString(Object o)
