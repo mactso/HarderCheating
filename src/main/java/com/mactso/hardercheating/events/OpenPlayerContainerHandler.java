@@ -2,6 +2,8 @@ package com.mactso.hardercheating.events;
 
 
 import com.mactso.hardercheating.Main;
+import com.mactso.hardercheating.config.MyConfig;
+import com.mactso.hardercheating.util.MyLogger;
 
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -22,11 +24,16 @@ public class OpenPlayerContainerHandler
 	public static void onChange(PlayerContainerEvent event)
 	{
 		
-		Player ep = event.getPlayer();
-		if (ep instanceof ServerPlayer) {
+		Player cheater = event.getPlayer();
+		if (cheater instanceof ServerPlayer) {
+			boolean header = true;
+			String fixed = "";
+			if (MyConfig.isFixBadStacks()) {
+				fixed = " : Set to legal maximum value.";
+			}
 			AbstractContainerMenu container = event.getContainer();
 			String name = container.getClass().getName();
-			if (name.contains("minecraft")) {
+			if (MyConfig.isValidMod(name)) {
 				// is it an exception container?  If so, exit.
 				NonNullList<ItemStack> stacks = container.getItems();
 
@@ -34,10 +41,12 @@ public class OpenPlayerContainerHandler
 					if (stack.isEmpty()) continue;
 //					stack.setCount(64); // TODO remove this line.
 					if (stack.getCount() > stack.getMaxStackSize()) {
-						System.out.println("stack size violation");
-						// event to check when player picks up a stack
-						// log violation
-						// optionally fix error
+						String temp =   String.format("%-20s", stack.getDisplayName().getString())  + " stack size " + stack.getCount() + fixed;
+						MyLogger.logItem((ServerPlayer) cheater, temp, header);
+						header = false;
+						if (MyConfig.isFixBadStacks()) {
+							stack.setCount(stack.getMaxStackSize());
+						}
 						// optionally turn chest to TNT
 						// check for too many valuable items (like diamond blocks)
 						// log warning

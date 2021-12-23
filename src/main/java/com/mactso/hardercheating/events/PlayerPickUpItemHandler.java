@@ -1,9 +1,10 @@
 package com.mactso.hardercheating.events;
 
-import java.io.File;
-
 import com.mactso.hardercheating.Main;
+import com.mactso.hardercheating.config.MyConfig;
+import com.mactso.hardercheating.util.MyLogger;
 
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent.ItemPickupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,13 +18,16 @@ public class PlayerPickUpItemHandler {
 	public static void onChange(ItemPickupEvent event )
 	{
 		ItemStack stack = event.getStack();
-		System.out.println("player picked up stack");
-//		stack.setCount(64);
+		boolean header = true;
+		
 		if (stack.getCount() > stack.getMaxStackSize()) {
-			System.out.println("stack size violation");
-			// event to check when player picks up a stack
-			// log violation
+			String temp =  "Player picked up " + String.format("%-20s", stack.getDisplayName().getString()) + " stack size " + stack.getCount();
+			MyLogger.logItem((ServerPlayer) event.getPlayer(), temp, header);
+			header = false;
 			// optionally fix error
+//			if (MyConfig.isFixBadStacks()) {
+//				stack.setCount(stack.getMaxStackSize());
+//			}
 		}
 	}
 }
