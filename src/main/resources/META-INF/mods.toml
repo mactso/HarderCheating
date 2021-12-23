@@ -1,0 +1,27 @@
+modLoader="javafml"
+loaderVersion="[38,)"
+license="MIT License"
+[[mods]]
+modId="hardercheating"
+version="${file.jarVersion}"
+displayName="Harder Cheating"
+displayURL="https://www.curseforge.com/minecraft/mc-mods/harder-cheating"
+updateJSONURL="https://github.com/mactso/HarderCheating/raw/main/update.json"
+logoFile="Logo.png"
+authors="MacTso, Lupicus"
+description='hardercheating.'
+[[dependencies.hardercheating]]
+    modId="forge"
+    mandatory=true
+    versionRange="[38,)"
+    ordering="NONE"
+    side="SERVER"
+
+[[dependencies.hardercheating]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18,1.19)"
+    ordering="NONE"
+    side="SERVER"
+
+
