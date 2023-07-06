@@ -1,11 +1,12 @@
 .gradle
 /logs/
 /.classpath
+/.gradle/
 /.settings/
 /bin/
 /run/
 /build/
 /.project
 /*.launch
-/build.gradle.bak
-/go16.bat
+
+
