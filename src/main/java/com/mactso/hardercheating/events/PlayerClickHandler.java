@@ -16,7 +16,7 @@ public class PlayerClickHandler {
 	@SubscribeEvent
 	public static void onChange(PlayerInteractEvent event) {
 		boolean header = true;
-		if (event.getPlayer() instanceof ServerPlayer player) {
+		if (event.getEntity() instanceof ServerPlayer player) {
 
 			int dist = event.getPos().distManhattan(player.blockPosition());
 

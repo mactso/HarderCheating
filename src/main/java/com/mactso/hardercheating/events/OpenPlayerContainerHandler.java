@@ -23,7 +23,7 @@ public class OpenPlayerContainerHandler
 	public static void onChange(PlayerContainerEvent event)
 	{
 		
-		Player cheater = event.getPlayer();
+		Player cheater = event.getEntity();
 		if (cheater instanceof ServerPlayer) {
 			boolean header = true;
 			String fixed = "";

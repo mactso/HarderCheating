@@ -1,4 +1,5 @@
 .gradle
+/build/
 /logs/
 /.classpath
 /.settings/
@@ -7,5 +8,4 @@
 /build/
 /.project
 /*.launch
-/build.gradle.bak
-/go16.bat
+/.eclipse

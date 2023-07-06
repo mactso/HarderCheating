@@ -1,7 +1,6 @@
 package com.mactso.hardercheating.events;
 
 import com.mactso.hardercheating.Main;
-import com.mactso.hardercheating.config.MyConfig;
 import com.mactso.hardercheating.util.MyLogger;
 
 import net.minecraft.server.level.ServerPlayer;
@@ -22,7 +21,7 @@ public class PlayerPickUpItemHandler {
 		
 		if (stack.getCount() > stack.getMaxStackSize()) {
 			String temp =  "Player picked up " + String.format("%-20s", stack.getDisplayName().getString()) + " stack size " + stack.getCount();
-			MyLogger.logItem((ServerPlayer) event.getPlayer(), temp, header);
+			MyLogger.logItem((ServerPlayer) event.getEntity(), temp, header);
 			header = false;
 			// optionally fix error
 //			if (MyConfig.isFixBadStacks()) {

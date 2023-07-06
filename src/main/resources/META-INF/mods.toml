@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[38,)"
+loaderVersion="[46,)"
 license="MIT License"
 [[mods]]
 modId="hardercheating"
@@ -13,14 +13,14 @@ description='hardercheating.'
 [[dependencies.hardercheating]]
     modId="forge"
     mandatory=true
-    versionRange="[38,)"
+    versionRange="[46,)"
     ordering="NONE"
     side="SERVER"
 
 [[dependencies.hardercheating]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18,1.19)"
+    versionRange="[1.20,1.21)"
     ordering="NONE"
     side="SERVER"
 
