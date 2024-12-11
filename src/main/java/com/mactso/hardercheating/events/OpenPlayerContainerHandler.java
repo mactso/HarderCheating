@@ -38,7 +38,7 @@ public class OpenPlayerContainerHandler
 
 				for (ItemStack stack : stacks) {
 					if (stack.isEmpty()) continue;
-//					stack.setCount(64); // TODO remove this line.
+//
 					if (stack.getCount() > stack.getMaxStackSize()) {
 						String temp =   String.format("%-20s", stack.getDisplayName().getString())  + " stack size " + stack.getCount() + fixed;
 						MyLogger.logItem((ServerPlayer) cheater, temp, header);
