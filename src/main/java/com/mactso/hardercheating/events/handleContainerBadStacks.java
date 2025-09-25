@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
-public class OpenPlayerContainerHandler
+public class handleContainerBadStacks
 {
 	@SubscribeEvent
 	public static void onChange(PlayerContainerEvent event)
@@ -38,7 +38,7 @@ public class OpenPlayerContainerHandler
 
 				for (ItemStack stack : stacks) {
 					if (stack.isEmpty()) continue;
-//
+
 					if (stack.getCount() > stack.getMaxStackSize()) {
 						String temp =   String.format("%-20s", stack.getDisplayName().getString())  + " stack size " + stack.getCount() + fixed;
 						MyLogger.logItem((ServerPlayer) cheater, temp, header);

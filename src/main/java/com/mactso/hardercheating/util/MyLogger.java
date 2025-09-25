@@ -31,7 +31,7 @@ public class MyLogger {
 		String name = cheater.getName().getString();
 
 		if (header) p.println(dtf.format(now) + " ("+String.format("%-20s", pos) + ")  " +String.format("%-16s", name) + ") " + cheater.getStringUUID());
-		p.println("   " + violation);
+		p.println(String.format("%-16s", name) + "   " + violation);
 		
 		if (p != System.out) {
 			p.close();

@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0.24,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = "${minecraft_version}-$mod_version"
@@ -85,9 +86,8 @@ minecraft {
 
         server {
             property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
         }
-
+        
         // This run config launches GameTestServer and runs all registered gametests, then exits.
         // By default, the server will crash when no gametests are provided.
         // The gametest system is also enabled by default for other run configs under the /test command.
@@ -122,11 +122,11 @@ repositories {
 dependencies {
     // Specify the version of Minecraft to use.
     // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
-    // The "userdev" classifier will be requested and setup by ForgeGradle.
+    // The "userdev" classifier will be r equested and setup by ForgeGradle.
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
+    annotationProcessor 'org.spongepowered:mixin:0.8.7:processor'
     // Example mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime
     // compileOnly "mezz.jei:jei-${mc_version}-common-api:${jei_version}"
@@ -141,9 +141,6 @@ dependencies {
     // For more info:
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
-    
-    // Hack fix for now, force jopt-simple to be exactly 5.0.4 because Mojang ships that version, but some transitive dependencies request 6.0+ 
-    implementation('net.sf.jopt-simple:jopt-simple:5.0.4') { version { strictly '5.0.4' } }
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -165,6 +162,13 @@ dependencies {
 // }
 //}
 
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, 'hardercheating.mixins.refmap.json'
+    config 'hardercheating.mixins.json'
+}
+
+
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
     manifest {
@@ -175,7 +179,8 @@ tasks.named('jar', Jar).configure {
             "Implementation-Title": archivesBaseName,
             "Implementation-Version": mod_version,
             "Implementation-Vendor" :"twoguys",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            'MixinConfigs': mixin.configNames.join(',')
         ])
     }
 }
