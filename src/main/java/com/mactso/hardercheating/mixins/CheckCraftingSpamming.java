@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import com.mactso.hardercheating.config.MyConfig;
+import com.mactso.hardercheating.myconfig.MyConfig;
 import com.mactso.hardercheating.util.MyLogger;
 import com.mactso.hardercheating.util.PlayerInteractionData;
 
@@ -38,6 +38,8 @@ public class CheckCraftingSpamming {
 	@Inject(method = "sendSlotChange(Lnet/minecraft/world/inventory/AbstractContainerMenu;ILnet/minecraft/world/item/ItemStack;)V", at = @At("HEAD"), cancellable = true)
 	private void onSendSlotChange(AbstractContainerMenu menu, int slot, ItemStack stack, CallbackInfo ci) {
 
+		if (!MyConfig.isCheckMaxRecipesPerSecond()) 
+			return;
 
 		ServerPlayer serverPlayer = this$0;
 		// System.out.println ("Recipe Change");
@@ -58,7 +60,7 @@ public class CheckCraftingSpamming {
 			return;
 		}
 		data.interactionCount++;
-		if (data.interactionCount > MyConfig.getmaxCraftRecipesPerSecond() *  MyConfig.NINE_SLOTS) {
+		if (data.interactionCount > MyConfig.getMaxCraftRecipesPerSecond() *  MyConfig.NINE_SLOTS) {
 
 			MyLogger.logItem(serverPlayer, " Disconnected for Rapid Crafting Recipe Spamming.", true);
 			

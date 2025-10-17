@@ -2,7 +2,7 @@ package com.mactso.hardercheating.events;
 
 
 import com.mactso.hardercheating.Main;
-import com.mactso.hardercheating.config.MyConfig;
+import com.mactso.hardercheating.myconfig.MyConfig;
 import com.mactso.hardercheating.util.MyLogger;
 
 import net.minecraft.core.NonNullList;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Bus.FORGE)
-public class handleContainerBadStacks
+public class HandleContainerBadStacks
 {
 	@SubscribeEvent
 	public static void onChange(PlayerContainerEvent event)
