@@ -32,7 +32,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
@@ -237,19 +237,19 @@ public class HandleExcessEntities {
 	}
 
 	@SubscribeEvent
-	public static void handleEntityJoinExcessEntitiesInChunk(EntityJoinLevelEvent event) {
+	public static boolean handleEntityJoinExcessEntitiesInChunk(EntityJoinLevelEvent event) {
 
 		if (!MyConfig.isCheckMaxEntities()) {
-			return;
+			return MyConfig.CONTINUE_EVENT;
 		}
 
 		if (event.getLevel().isClientSide()) {
-			return;
+			return MyConfig.CONTINUE_EVENT;
 		}
 
 		Entity entity = event.getEntity();
 		if (isUnblockable(entity))
-			return;
+			return MyConfig.CONTINUE_EVENT;
 
 		MobCategory category = entity.getType().getCategory();
 		ServerLevel serverLevel = (ServerLevel) entity.level();
@@ -257,7 +257,7 @@ public class HandleExcessEntities {
 		// 1. Initial Fast Check (The Compromise/Hack)
 		int totalCount = entitiesInChunk.size();
 		if (totalCount <= MyConfig.getChunkEntityLimit())
-			return; // Fast Exit: Don't do the slow category counting
+			return MyConfig.CONTINUE_EVENT;
 
 		// 2. Slow, Detailed Category Check (Only run if totalCount is over the rough
 		// chunk limit)
@@ -267,7 +267,7 @@ public class HandleExcessEntities {
 		Map<MobCategory, Integer> countsByCategory = getCountsByCategory(entitiesInChunk);
 		
 		if (countsByCategory.getOrDefault(category, 0) < MyConfig.getMaxCategoryCount(category))
-			return;
+			return MyConfig.CONTINUE_EVENT;
 
 		String cleanEntityDescription = getLogEntityDescription(entity);
 		String categoryName = getLogCategoryName(entity);
@@ -277,7 +277,7 @@ public class HandleExcessEntities {
 				+ totalCount + " chunk entities.";
 		MyLogger.logItem(messageBlockedEntity);
 
-		event.setCanceled(true); // block a non-rare excess entity or item entity from entering the world.
+		return MyConfig.CANCEL_EVENT; // block a non-rare excess entity or item entity from entering the world.
 
 	}
 

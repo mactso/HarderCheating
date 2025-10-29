@@ -5,8 +5,8 @@ import java.io.File;
 import com.mactso.hardercheating.Main;
 
 import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.Priority;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
@@ -19,7 +19,7 @@ public class StartupHandler {
 			fd.mkdir();
 	}
 	
-	@SubscribeEvent(priority = EventPriority.NORMAL)
+	@SubscribeEvent(priority = Priority.NORMAL)
 	public static void onStartup(ServerStartingEvent event) {
 		System.out.println("Server Starting");
 		initReports();
