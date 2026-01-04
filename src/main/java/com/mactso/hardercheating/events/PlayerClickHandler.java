@@ -28,7 +28,7 @@ public class PlayerClickHandler {
 
 		if (event.getEntity() instanceof ServerPlayer serverPlayer) {
 
-			checkClickingTooFarAway(event, serverPlayer);
+			checkClickingTooFarAway(serverPlayer, event );
 
 			if (MyConfig.isCheckMaxClicksPerSecond()) {
 				if (isClickingTooMuchPerSecond(serverPlayer)) {
@@ -72,7 +72,7 @@ public class PlayerClickHandler {
 
 	}
 
-	private static void checkClickingTooFarAway(PlayerInteractEvent event, ServerPlayer serverPlayer) {
+	private static void checkClickingTooFarAway( ServerPlayer serverPlayer, PlayerInteractEvent event) {
 		int dist = event.getPos().distManhattan(serverPlayer.blockPosition());
 
 		if (dist > MyConfig.getMaxClickDistance()) {
