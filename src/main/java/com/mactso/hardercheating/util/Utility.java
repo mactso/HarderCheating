@@ -2,6 +2,7 @@ package com.mactso.hardercheating.util;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,11 +13,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.LivingEntity;
 
 import com.mactso.hardercheating.myconfig.MyConfig;
+import com.mojang.authlib.GameProfile;
 
 public class Utility {
 	
@@ -69,7 +72,7 @@ public class Utility {
      * @param expires The expiration date (null = permanent ban).
      */
     public static void banAndKick(ServerPlayer player, String reason, int days) {
-        MinecraftServer server = player.getServer();  // or player.server
+        MinecraftServer server = player.level().getServer();  // or player.server
         if (server == null) {
             // Shouldn’t normally happen for a connected player
             return;
@@ -84,14 +87,18 @@ public class Utility {
 
         UserBanList banList = server.getPlayerList().getBans();
 
-        // Create a ban entry for this player
-        UserBanListEntry entry = new UserBanListEntry(
-            player.getGameProfile(),
-            new Date(),               // ban start time
-            "Server",                  // source (you may substitute operator name)
-            expires,                   // expiration (null = permanent)
-            reason                     // ban reason
-        );
+
+		// Create a ban entry for this player
+        GameProfile profile = player.getGameProfile();
+        NameAndId gp = new NameAndId(profile);
+
+		UserBanListEntry entry = new UserBanListEntry(
+        	    gp,          // GameProfile of the player
+        	    new Date(),                       // ban start time (now)
+        	    "Server",      // source of the ban (operator name or "Server")
+        	    expires,                          // expiration date (null = permanent)
+        	    reason         // ban reason
+        	);
 
         banList.add(entry);
 
